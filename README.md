@@ -111,4 +111,4 @@ Les autres lignes du fichier sont leurs dépendances transitives, figées par
 
 ## Auteurs
 
-Projet réalisé en trinôme dans le cadre du cursus ING3 de l'ECE.
+Projet réalisé en trinôme (TAGNE CHIBY Ellios, BENBOUJEMAA Manel, SABITY Brahim).
