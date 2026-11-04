@@ -1,0 +1,33 @@
+# --- Environnement virtuel ---
+.venv/
+venv/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# --- Outils de test et de qualité ---
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- Données générées et sorties d'exécution (on garde les dossiers) ---
+data/generated/*
+!data/generated/.gitkeep
+reports/*
+!reports/.gitkeep
+
+# --- Secrets et configuration locale ---
+.env
+
+# --- Éditeurs et systèmes ---
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+.DS_Store
