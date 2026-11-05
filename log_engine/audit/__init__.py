@@ -1,1 +1,1 @@
-"""Audit d'introspection du contexte (``globals()`` / ``locals()``)."""
+"""Audit d'introspection du contexte (globals() / locals())."""

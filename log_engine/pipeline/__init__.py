@@ -1,1 +1,1 @@
-"""Pipeline fonctionnel : ``filter()``, ``map()`` et ``lambda``."""
+"""Pipeline fonctionnel : filter(), map() et lambda."""

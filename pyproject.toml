@@ -1,5 +1,3 @@
-# Configuration des outils de développement (pas de packaging à ce stade).
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
@@ -8,11 +6,9 @@ addopts = "-ra"
 source = ["log_engine"]
 
 [tool.ruff]
-line-length = 79          # Limite recommandée par la PEP 8
+line-length = 79
 target-version = "py310"
 exclude = [".venv", "notebooks"]
 
 [tool.ruff.lint]
-# E/W : pycodestyle (PEP 8), F : pyflakes, I : tri des imports,
-# N : nommage PEP 8, UP : syntaxe moderne, B : bugs fréquents
 select = ["E", "W", "F", "I", "N", "UP", "B"]

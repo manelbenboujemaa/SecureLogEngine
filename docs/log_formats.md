@@ -21,21 +21,21 @@ un enregistrement normalisé unique.
 
 | Niveau | Valeur | Signification |
 |---|---|---|
-| `INFO` | 20 | Fonctionnement normal (connexion réussie, requête 200) |
-| `WARNING` | 30 | Anomalie isolée (mot de passe erroné, page introuvable) |
-| `ERROR` | 40 | Échec ou refus significatif (accès interdit, erreur 500) |
-| `CRITICAL` | 50 | Incident grave (élévation de privilèges, service tombé) |
+| `INFO` | 1 | Fonctionnement normal (connexion réussie, requête 200) |
+| `WARNING` | 2 | Anomalie isolée (mot de passe erroné, page introuvable) |
+| `ERROR` | 3 | Échec ou refus significatif (accès interdit, erreur 500) |
+| `CRITICAL` | 4 | Incident grave (élévation de privilèges, service tombé) |
 
-Les valeurs sont celles du module standard `logging`. Les niveaux sont
-ordonnés (`Severity.ERROR > Severity.WARNING`), ce qui permet de filtrer
-par seuil minimal.
+Les niveaux sont définis dans le dictionnaire `SEVERITY_LEVELS` de
+`models.py`. Plus la valeur est grande, plus l'événement est grave : on
+peut donc comparer deux niveaux pour filtrer par seuil minimal.
 
-## 3. Champs de l'enregistrement normalisé (`LogRecord`)
+## 3. Champs de l'enregistrement normalisé
 
 | Champ | Type | Description |
 |---|---|---|
 | `timestamp` | `datetime` | Horodatage de l'événement, en UTC |
-| `severity` | `Severity` | Niveau de sévérité |
+| `severity` | `str` | Niveau de sévérité (`"INFO"`, `"ERROR"`…) |
 | `connection` | `tuple[str, int, str]` | Métadonnées immuables `(IP, port, protocole)` |
 | `user` | `str \| None` | Identifiant utilisateur, `None` si anonyme |
 | `event` | `str` | Type d'événement (voir § 7) |

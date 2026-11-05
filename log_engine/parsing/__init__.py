@@ -1,1 +1,1 @@
-"""Parsing des lignes brutes et routage structurel (``match-case``)."""
+"""Parsing des lignes brutes et routage structurel (match-case)."""

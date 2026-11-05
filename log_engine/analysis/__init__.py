@@ -1,1 +1,1 @@
-"""Agrégation (``set``, ``frozenset``, ``defaultdict``) et force brute."""
+"""Agrégation (set, frozenset, defaultdict) et force brute."""
