@@ -12,7 +12,7 @@ d'analyse de logs de sécurité, conçu pour traiter des fichiers volumineux
 | Étape | Contenu | Statut |
 |---|---|---|
 | 1 | Structure du projet, environnement virtuel, outillage | ✅ Terminée |
-| 2 | Modèles de données et jeux d'échantillons | ⏳ À venir |
+| 2 | Modèles de données et jeux d'échantillons | 🔄 En cours |
 | 3 | Ingestion en flux (`yield` / `yield from`) | ⏳ À venir |
 | 4 | Parsing et routage structurel (`match-case`) | ⏳ À venir |
 | 5 | Pipeline fonctionnel (`map` / `filter` / `lambda`) | ⏳ À venir |
@@ -34,7 +34,7 @@ d'analyse de logs de sécurité, conçu pour traiter des fichiers volumineux
 
 ```powershell
 git clone <url-du-depot>
-cd secure-log-engine
+cd SecureLogEngine
 
 # Création et activation de l'environnement virtuel
 py -3 -m venv .venv
@@ -59,7 +59,8 @@ python main.py --version
 ```
 
 Les commandes d'analyse seront documentées au fur et à mesure de leur
-implémentation.
+implémentation. Les formats de logs acceptés sont décrits dans
+[`docs/log_formats.md`](docs/log_formats.md).
 
 ## Tests et qualité
 
@@ -86,6 +87,7 @@ secure-log-engine/
 │   ├── security/        # Module 4 : moteur de règles
 │   ├── audit/           # Module 4 : introspection
 │   └── reporting/       # Rapports console et JSON
+├── docs/                # Spécifications (formats de logs)
 ├── scripts/             # Outils annexes (génération de données)
 ├── data/
 │   ├── samples/         # Jeu de démonstration versionné
