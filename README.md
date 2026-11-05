@@ -12,8 +12,8 @@ d'analyse de logs de sécurité, conçu pour traiter des fichiers volumineux
 | Étape | Contenu | Statut |
 |---|---|---|
 | 1 | Structure du projet, environnement virtuel, outillage | ✅ Terminée |
-| 2 | Modèles de données et jeux d'échantillons | 🔄 En cours |
-| 3 | Ingestion en flux (`yield` / `yield from`) | ⏳ À venir |
+| 2 | Modèles de données et jeux d'échantillons | ✅ Terminée |
+| 3 | Ingestion en flux (`yield` / `yield from`) | 🔄 En cours |
 | 4 | Parsing et routage structurel (`match-case`) | ⏳ À venir |
 | 5 | Pipeline fonctionnel (`map` / `filter` / `lambda`) | ⏳ À venir |
 | 6 | Agrégation (`set`, `frozenset`, `defaultdict`) | ⏳ À venir |
@@ -65,11 +65,14 @@ implémentation. Les formats de logs acceptés sont décrits dans
 ## Tests et qualité
 
 ```powershell
-pytest                                  # Lance la suite de tests
-pytest --cov --cov-report=term-missing  # Avec mesure de couverture
-ruff check .                            # Vérification PEP 8
-ruff format --check .                   # Vérification du formatage
+python -m pytest                                  # Lance la suite de tests
+python -m pytest --cov --cov-report=term-missing  # Avec mesure de couverture
+python -m ruff check .                            # Vérification PEP 8
+python -m ruff format --check .                   # Vérification du formatage
 ```
+
+> On passe par `python -m` plutôt que d'appeler directement `pytest.exe` :
+> certaines configurations de Windows bloquent ces exécutables non signés.
 
 ## Arborescence
 
