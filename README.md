@@ -58,6 +58,14 @@ python main.py --help
 python main.py --version
 ```
 
+Démonstration de la lecture en flux (mémoire d'un générateur vs chargement
+complet) :
+
+```powershell
+python -m scripts.memory_demo                 # Fichier généré de 200 000 lignes
+python -m scripts.memory_demo --lines 500000  # Taille personnalisée
+```
+
 Les commandes d'analyse seront documentées au fur et à mesure de leur
 implémentation. Les formats de logs acceptés sont décrits dans
 [`docs/log_formats.md`](docs/log_formats.md).

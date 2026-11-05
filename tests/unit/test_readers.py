@@ -185,3 +185,61 @@ def test_read_lines_on_several_files_one_after_another() -> None:
             assert number == count  # Numérotation propre à chaque fichier
         totals[name] = count
     assert sum(totals.values()) == 24 + 14 + 17
+
+
+# --- Protocole itérateur --------------------------------------------------
+
+
+def test_generator_follows_iterator_protocol(tmp_path: Path) -> None:
+    """Un générateur est un itérateur : iter() le renvoie lui-même."""
+    source = tmp_path / "proto.log"
+    source.write_text("a\nb\n", encoding="utf-8")
+    lines = read_lines(source)
+    assert iter(lines) is lines
+    assert next(lines) == (1, "a")
+    assert next(lines) == (2, "b")
+
+
+def test_exhausted_generator_raises_stop_iteration(tmp_path: Path) -> None:
+    """Une fois épuisé, next() lève StopIteration (la boucle for s'arrête)."""
+    source = tmp_path / "fin.log"
+    source.write_text("seule\n", encoding="utf-8")
+    lines = read_lines(source)
+    next(lines)
+    with pytest.raises(StopIteration):
+        next(lines)
+
+
+def test_generator_can_only_be_consumed_once(tmp_path: Path) -> None:
+    """Un générateur ne se rembobine pas : le 2e parcours est vide."""
+    source = tmp_path / "unique.log"
+    source.write_text("a\nb\n", encoding="utf-8")
+    lines = read_lines(source)
+    assert len(list(lines)) == 2
+    assert list(lines) == []
+    # Pour relire, il faut créer un nouveau générateur.
+    assert len(list(read_lines(source))) == 2
+
+
+def test_generator_state_lifecycle(tmp_path: Path) -> None:
+    """Le générateur passe par les états créé, suspendu puis fermé."""
+    source = tmp_path / "etats.log"
+    source.write_text("a\nb\n", encoding="utf-8")
+    lines = read_lines(source)
+    assert inspect.getgeneratorstate(lines) == inspect.GEN_CREATED
+    next(lines)
+    assert inspect.getgeneratorstate(lines) == inspect.GEN_SUSPENDED
+    list(lines)
+    assert inspect.getgeneratorstate(lines) == inspect.GEN_CLOSED
+
+
+def test_file_is_closed_when_reading_stops_early(tmp_path: Path) -> None:
+    """Arrêter la lecture en cours de route ferme quand même le fichier."""
+    source = tmp_path / "arret.log"
+    source.write_text("a\nb\nc\n", encoding="utf-8")
+    lines = read_lines(source)
+    next(lines)
+    opened_file = lines.gi_frame.f_locals["file"]
+    assert not opened_file.closed
+    lines.close()  # Ce que fait aussi un break suivi de la destruction
+    assert opened_file.closed
