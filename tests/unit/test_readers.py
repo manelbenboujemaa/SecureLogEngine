@@ -6,7 +6,8 @@ from pathlib import Path
 import pytest
 
 from log_engine.exceptions import LogEngineError, SourceNotFoundError
-from log_engine.ingestion.readers import read_lines
+from log_engine.ingestion import readers
+from log_engine.ingestion.readers import read_lines, read_source, read_sources
 
 SAMPLES_DIR = Path(__file__).parent.parent.parent / "data" / "samples"
 
@@ -107,3 +108,83 @@ def test_each_sample_file(file_name, expected):
     lines = list(read_lines(SAMPLES_DIR / file_name))
     assert len(lines) == expected
     assert lines[0][0] == 1
+
+
+def test_read_source_adds_file_name(tmp_path):
+    """Chaque ligne est accompagnée du nom de son fichier."""
+    path = create_file(tmp_path, "a\nb\n")
+    assert list(read_source(path)) == [
+        ("test.log", 1, "a"),
+        ("test.log", 2, "b"),
+    ]
+
+
+def test_read_sources_is_a_generator():
+    """read_sources renvoie un générateur."""
+    assert inspect.isgenerator(read_sources([]))
+
+
+def test_read_sources_chains_files_in_order(tmp_path):
+    """Les fichiers sont lus l'un après l'autre, dans l'ordre de la liste."""
+    first = tmp_path / "un.log"
+    first.write_text("a\nb\n", encoding="utf-8")
+    second = tmp_path / "deux.log"
+    second.write_text("c\n", encoding="utf-8")
+    assert list(read_sources([first, second])) == [
+        ("un.log", 1, "a"),
+        ("un.log", 2, "b"),
+        ("deux.log", 1, "c"),
+    ]
+
+
+def test_read_sources_on_sample_files():
+    """Les trois fichiers d'exemple forment un seul flux de lignes."""
+    paths = [
+        SAMPLES_DIR / "auth.log",
+        SAMPLES_DIR / "app_events.jsonl",
+        SAMPLES_DIR / "connections.csv",
+    ]
+    lines = list(read_sources(paths))
+    assert len(lines) == 24 + 14 + 17
+    assert lines[0][0] == "auth.log"
+    assert lines[-1][0] == "connections.csv"
+
+
+def test_read_sources_with_empty_list():
+    """Une liste vide ne produit aucune ligne."""
+    assert list(read_sources([])) == []
+
+
+def test_missing_file_is_skipped_with_warning(tmp_path, caplog):
+    """Un fichier absent est signalé puis ignoré, les autres sont lus."""
+    path = create_file(tmp_path, "a\n")
+    lines = list(read_sources([tmp_path / "absent.log", path]))
+    assert lines == [("test.log", 1, "a")]
+    assert "Source ignorée" in caplog.text
+    assert "absent.log" in caplog.text
+
+
+def test_unreadable_file_is_skipped(tmp_path, monkeypatch, caplog):
+    """Un fichier sans droit de lecture est ignoré sans tout arrêter."""
+    good = create_file(tmp_path, "ok\n")
+
+    def fake_read_lines(path):
+        if str(path).endswith("secret.log"):
+            raise PermissionError("Permission refusée : secret.log")
+        yield from real_read_lines(path)
+
+    real_read_lines = readers.read_lines
+    monkeypatch.setattr(readers, "read_lines", fake_read_lines)
+    lines = list(read_sources([tmp_path / "secret.log", good]))
+    assert lines == [("test.log", 1, "ok")]
+    assert "Permission refusée" in caplog.text
+
+
+def test_second_file_is_opened_only_when_needed(tmp_path, caplog):
+    """Le fichier suivant n'est ouvert qu'une fois le premier terminé."""
+    path = create_file(tmp_path, "a\n")
+    lines = read_sources([path, tmp_path / "absent.log"])
+    assert next(lines) == ("test.log", 1, "a")
+    assert caplog.text == ""
+    assert list(lines) == []
+    assert "absent.log" in caplog.text

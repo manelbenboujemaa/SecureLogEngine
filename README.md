@@ -71,7 +71,7 @@ Les formats de logs acceptés sont décrits dans `docs/log_formats.md`.
 - [x] Structure du projet et environnement
 - [x] Formats de logs et données d'exemple
 - [x] Lecture des fichiers avec un générateur
-- [ ] Lecture de plusieurs fichiers (`yield from`)
+- [x] Lecture de plusieurs fichiers (`yield from`)
 - [ ] Parsing et routage (`match-case`)
 - [ ] Filtrage et transformation (`map`, `filter`, `lambda`)
 - [ ] Statistiques (`set`, `frozenset`, `defaultdict`)
