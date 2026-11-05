@@ -1,4 +1,3 @@
-"""Secure Log Engine : moteur d'analyse de logs de sécurité en flux."""
+"""Moteur d'analyse de logs de sécurité."""
 
-__app_name__: str = "secure-log-engine"
-__version__: str = "0.1.0"
+__version__ = "0.1.0"

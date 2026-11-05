@@ -13,10 +13,8 @@ def create_test_file(path: str, nb_lines: int) -> None:
     """Crée un fichier de logs de test contenant nb_lines lignes."""
     with open(path, "w", encoding="utf-8") as file:
         for i in range(nb_lines):
-            file.write(
-                f"2026-11-04T08:12:01Z | WARNING | 203.0.113.45:41001/TCP "
-                f'| admin | AUTH_FAILURE | {{"attempt": {i}}}\n'
-            )
+            line = f"2026-11-04T08:12:01Z | WARNING | 10.0.0.5 | tentative {i}"
+            file.write(line + "\n")
 
 
 def read_with_generator(path: str) -> int:

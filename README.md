@@ -49,22 +49,34 @@ parfois `pytest.exe`.
 ## Organisation du projet
 
 ```
-main.py              point d'entrée
-log_engine/          code du moteur
-  ingestion/         lecture des fichiers
-  parsing/           découpage des lignes
-  pipeline/          filtrage et transformation
-  analysis/          statistiques et détection de force brute
-  security/          règles de sécurité
-  audit/             audit avec globals() / locals()
-  reporting/         rapports
-data/samples/        fichiers de logs d'exemple
-docs/                description des formats de logs
-scripts/             scripts annexes
-tests/               tests pytest
+main.py                  point d'entrée
+log_engine/
+  models.py              constantes des formats de logs
+  exceptions.py          erreurs du programme
+  cli.py                 ligne de commande
+  ingestion/readers.py   lecture des fichiers
+data/samples/            fichiers de logs d'exemple
+scripts/memory_demo.py   démonstration de la mémoire utilisée
+tests/                   tests pytest
 ```
 
-Les formats de logs acceptés sont décrits dans `docs/log_formats.md`.
+## Formats de logs
+
+Trois formats sont acceptés :
+
+- `auth.log` : texte, six champs séparés par ` | `
+  (date, niveau, ip:port/protocole, utilisateur, événement, détails)
+- `app_events.jsonl` : un objet JSON par ligne
+- `connections.csv` : connexions réseau au format CSV
+
+`blacklist.txt` contient une adresse IP par ligne.
+
+Niveaux de sévérité, du moins grave au plus grave :
+`INFO`, `WARNING`, `ERROR`, `CRITICAL`.
+
+Les fichiers d'exemple contiennent volontairement une attaque par force
+brute, un scan de ports et quelques lignes invalides pour tester le
+programme.
 
 ## Avancement
 

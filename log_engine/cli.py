@@ -1,31 +1,17 @@
-"""Interface en ligne de commande de Secure Log Engine."""
+"""Interface en ligne de commande."""
 
 import argparse
-from collections.abc import Sequence
 
-from log_engine import __app_name__, __version__
+from log_engine import __version__
 
 
-def build_parser() -> argparse.ArgumentParser:
-    """Construit l'analyseur d'arguments de la CLI."""
+def main(arguments: list[str] | None = None) -> int:
+    """Lit les arguments de la ligne de commande et lance le programme."""
     parser = argparse.ArgumentParser(
-        prog=__app_name__,
-        description=(
-            "Moteur de traitement et d'analyse de flux de logs de sécurité."
-        ),
+        prog="secure-log-engine",
+        description="Analyse de fichiers de logs de sécurité.",
     )
-    parser.add_argument(
-        "--version",
-        action="version",
-        version=f"%(prog)s {__version__}",
-        help="Affiche la version et quitte.",
-    )
-    return parser
-
-
-def main(argv: Sequence[str] | None = None) -> int:
-    """Point d'entrée de la CLI."""
-    parser = build_parser()
-    parser.parse_args(argv)
+    parser.add_argument("--version", action="version", version=__version__)
+    parser.parse_args(arguments)
     parser.print_help()
     return 0

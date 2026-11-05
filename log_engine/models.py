@@ -1,4 +1,4 @@
-"""Description des données manipulées par le moteur."""
+"""Constantes décrivant les formats de logs."""
 
 SEVERITY_LEVELS = {
     "INFO": 1,
@@ -6,16 +6,6 @@ SEVERITY_LEVELS = {
     "ERROR": 3,
     "CRITICAL": 4,
 }
-
-RECORD_KEYS = (
-    "timestamp",
-    "severity",
-    "connection",
-    "user",
-    "event",
-    "payload",
-    "source",
-)
 
 TEXT_SEPARATOR = " | "
 TEXT_FIELDS = (
@@ -26,7 +16,6 @@ TEXT_FIELDS = (
     "event",
     "payload",
 )
-ANONYMOUS_USER = "-"
 
 JSONL_REQUIRED_KEYS = frozenset(
     {"timestamp", "level", "src_ip", "src_port", "protocol", "event"}

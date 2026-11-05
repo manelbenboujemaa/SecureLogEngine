@@ -1,6 +1,0 @@
-# Normalise les fins de ligne : évite les diffs parasites entre Windows et Linux/macOS.
-* text=auto
-*.py text eol=lf
-*.log text eol=lf
-*.jsonl text eol=lf
-*.csv text eol=lf

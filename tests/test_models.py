@@ -14,7 +14,7 @@ from log_engine.models import (
     TEXT_SEPARATOR,
 )
 
-SAMPLES_DIR = Path(__file__).parent.parent.parent / "data" / "samples"
+SAMPLES_DIR = Path("data/samples")
 
 
 def test_severity_levels_are_ordered():
